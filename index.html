@@ -1,0 +1,807 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hệ thống Quản lý Toàn án Nội bộ</title>
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <script>tailwind.config={theme:{extend:{colors:{primary:'#f97316',secondary:'#10b981'},borderRadius:{'none':'0px','sm':'4px',DEFAULT:'8px','md':'12px','lg':'16px','xl':'20px','2xl':'24px','3xl':'32px','full':'9999px','button':'8px'}}}}</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
+    <style>
+        :where([class^="ri-"])::before { content: "\f3c2"; }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b">
+        <div class="px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <div class="font-['Pacifico'] text-2xl text-primary">⚖️</div>
+                    <div class="text-xl font-semibold text-gray-900">Hệ thống Quản lý Thông tin Toàn án Nội bộ - Tỉnh An Giang</div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="w-8 h-8 flex items-center justify-center">
+                        <i class="ri-notification-line text-gray-600"></i>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
+                            <i class="ri-user-line text-white text-sm"></i>
+                        </div>
+                        <span class="text-sm font-medium text-gray-700">Thẩm phán - Nguyễn Văn Minh</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="flex">
+        <!-- Sidebar -->
+        <aside class="w-64 bg-white shadow-sm h-screen sticky top-0">
+            <nav class="p-4 space-y-2">
+                <div class="mb-6">
+                    <div class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Dashboard</div>
+                    <div class="space-y-1">
+                        <a href="#" class="flex items-center px-3 py-2 text-sm font-medium text-white bg-primary rounded-lg">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-dashboard-line text-sm"></i>
+                            </div>
+                            Tổng quan
+                        </a>
+                        <a href="#" class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-bar-chart-line text-sm"></i>
+                            </div>
+                            Thống kê hồ sơ
+                        </a>
+                        <a href="#" class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-time-line text-sm"></i>
+                            </div>
+                            Tiến độ xét xử
+                        </a>
+                        <a href="#" class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-user-star-line text-sm"></i>
+                            </div>
+                            Hiệu suất thẩm phán
+                        </a>
+                    </div>
+                </div>
+
+                <div class="mb-6">
+                    <div class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Nộp đơn & Tiếp nhận</div>
+                    <div class="space-y-1">
+                        <a href="#" class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-file-add-line text-sm"></i>
+                            </div>
+                            Nộp đơn trực tuyến
+                        </a>
+                        <a href="#" class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-file-list-line text-sm"></i>
+                            </div>
+                            Danh sách đơn
+                        </a>
+                        <a href="#" class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-upload-line text-sm"></i>
+                            </div>
+                            Tài liệu kèm theo
+                        </a>
+                    </div>
+                </div>
+
+                <div class="mb-6">
+                    <div class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Duyệt đơn & Phân công</div>
+                    <div class="space-y-1">
+                        <a href="#" class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-check-line text-sm"></i>
+                            </div>
+                            Duyệt đơn
+                        </a>
+                        <a href="#" class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-user-settings-line text-sm"></i>
+                            </div>
+                            Phân công thẩm phán
+                        </a>
+                        <a href="#" class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-history-line text-sm"></i>
+                            </div>
+                            Nhật ký xử lý
+                        </a>
+                    </div>
+                </div>
+
+                <div class="mb-6">
+                    <div class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Bản án & Xét xử</div>
+                    <div class="space-y-1">
+                        <a href="#" class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-scales-line text-sm"></i>
+                            </div>
+                            Vụ án đang xử
+                        </a>
+                        <a href="#" class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-calendar-line text-sm"></i>
+                            </div>
+                            Lịch xét xử
+                        </a>
+                        <a href="#" class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-file-text-line text-sm"></i>
+                            </div>
+                            Bản án đã tuyên
+                        </a>
+                    </div>
+                </div>
+
+                <div class="mb-6">
+                    <div class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Quản trị hệ thống</div>
+                    <div class="space-y-1">
+                        <a href="#" class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-user-line text-sm"></i>
+                            </div>
+                            Quản lý người dùng
+                        </a>
+                        <a href="#" class="flex items-center px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg">
+                            <div class="w-5 h-5 flex items-center justify-center mr-3">
+                                <i class="ri-settings-line text-sm"></i>
+                            </div>
+                            Phân quyền
+                        </a>
+                    </div>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-6">
+            <!-- Stats Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <div class="bg-white p-6 rounded-lg shadow-sm border">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-600">Tổng số vụ việc</p>
+                            <p class="text-2xl font-bold text-gray-900">1,247</p>
+                            <p class="text-sm text-secondary">+12% so với tháng trước</p>
+                        </div>
+                        <div class="w-12 h-12 bg-primary bg-opacity-10 rounded-lg flex items-center justify-center">
+                            <i class="ri-file-list-line text-primary text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg shadow-sm border">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-600">Đang xét xử</p>
+                            <p class="text-2xl font-bold text-gray-900">342</p>
+                            <p class="text-sm text-primary">+8% so với tháng trước</p>
+                        </div>
+                        <div class="w-12 h-12 bg-secondary bg-opacity-10 rounded-lg flex items-center justify-center">
+                            <i class="ri-scales-line text-secondary text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg shadow-sm border">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-600">Đã hoàn thành</p>
+                            <p class="text-2xl font-bold text-gray-900">895</p>
+                            <p class="text-sm text-secondary">+15% so với tháng trước</p>
+                        </div>
+                        <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                            <i class="ri-check-line text-green-600 text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg shadow-sm border">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-600">Chờ thi hành án</p>
+                            <p class="text-2xl font-bold text-gray-900">156</p>
+                            <p class="text-sm text-orange-600">-5% so với tháng trước</p>
+                        </div>
+                        <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                            <i class="ri-time-line text-orange-600 text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Administrative Level Selector -->
+            <div class="bg-white p-6 rounded-lg shadow-sm border mb-8">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">Chọn địa bàn quản lý</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Tỉnh/Thành phố *</label>
+                        <div class="relative">
+                            <button id="provinceSelect" class="w-full px-4 py-3 text-left bg-white border border-gray-300 rounded-lg hover:border-gray-400 focus:border-primary focus:ring-2 focus:ring-primary focus:ring-opacity-20 transition-colors">
+                                <span id="provinceText" class="text-gray-500">Chọn Tỉnh/Thành phố</span>
+                                <div class="w-5 h-5 flex items-center justify-center absolute right-3 top-1/2 transform -translate-y-1/2">
+                                    <i class="ri-arrow-down-s-line text-gray-400"></i>
+                                </div>
+                            </button>
+                            <div id="provinceDropdown" class="hidden absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg max-h-60 overflow-y-auto">
+                                <div class="p-3 border-b">
+                                    <input type="text" id="provinceSearch" placeholder="Tìm kiếm tỉnh/thành phố..." class="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:border-primary focus:ring-1 focus:ring-primary">
+                                </div>
+                                <div id="provinceList" class="py-1">
+                                    <div class="px-4 py-2 hover:bg-gray-50 cursor-pointer text-sm" data-value="01">01 - Hà Nội</div>
+                                    <div class="px-4 py-2 hover:bg-gray-50 cursor-pointer text-sm" data-value="79">79 - Thành phố Hồ Chí Minh</div>
+                                    <div class="px-4 py-2 hover:bg-gray-50 cursor-pointer text-sm" data-value="31">31 - Hải Phòng</div>
+                                    <div class="px-4 py-2 hover:bg-gray-50 cursor-pointer text-sm" data-value="48">48 - Đà Nẵng</div>
+                                    <div class="px-4 py-2 hover:bg-gray-50 cursor-pointer text-sm" data-value="92">92 - Cần Thơ</div>
+                                    <div class="px-4 py-2 hover:bg-gray-50 cursor-pointer text-sm" data-value="02">02 - Hà Giang</div>
+                                    <div class="px-4 py-2 hover:bg-gray-50 cursor-pointer text-sm" data-value="04">04 - Cao Bằng</div>
+                                    <div class="px-4 py-2 hover:bg-gray-50 cursor-pointer text-sm" data-value="06">06 - Bắc Kạn</div>
+                                    <div class="px-4 py-2 hover:bg-gray-50 cursor-pointer text-sm" data-value="08">08 - Tuyên Quang</div>
+                                    <div class="px-4 py-2 hover:bg-gray-50 cursor-pointer text-sm" data-value="10">10 - Lào Cai</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Phường/Xã *</label>
+                        <div class="relative">
+                            <button id="wardSelect" class="w-full px-4 py-3 text-left bg-gray-100 border border-gray-300 rounded-lg cursor-not-allowed" disabled>
+                                <span id="wardText" class="text-gray-400">Chọn Phường/Xã</span>
+                                <div class="w-5 h-5 flex items-center justify-center absolute right-3 top-1/2 transform -translate-y-1/2">
+                                    <i class="ri-arrow-down-s-line text-gray-400"></i>
+                                </div>
+                            </button>
+                            <div id="wardDropdown" class="hidden absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg max-h-60 overflow-y-auto">
+                                <div class="p-3 border-b">
+                                    <input type="text" id="wardSearch" placeholder="Tìm kiếm phường/xã..." class="w-full px-3 py-2 border border-gray-300 rounded text-sm focus:border-primary focus:ring-1 focus:ring-primary">
+                                </div>
+                                <div id="wardList" class="py-1">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-4 flex space-x-3">
+                    <button class="px-4 py-2 bg-primary text-white rounded-button font-medium hover:bg-orange-600 transition-colors whitespace-nowrap !rounded-button">
+                        Áp dụng bộ lọc
+                    </button>
+                    <button id="clearSelection" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-button font-medium hover:bg-gray-200 transition-colors whitespace-nowrap !rounded-button">
+                        Xóa lựa chọn
+                    </button>
+                </div>
+            </div>
+
+            <!-- Charts Section -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                <div class="bg-white p-6 rounded-lg shadow-sm border">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Thống kê hồ sơ theo loại vụ việc</h3>
+                    <div id="caseTypeChart" style="height: 300px;"></div>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg shadow-sm border">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Tiến độ xét xử theo tháng</h3>
+                    <div id="progressChart" style="height: 300px;"></div>
+                </div>
+            </div>
+
+            <!-- Recent Cases Table -->
+            <div class="bg-white rounded-lg shadow-sm border">
+                <div class="p-6 border-b">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-lg font-semibold text-gray-900">Vụ việc gần đây</h3>
+                        <div class="flex items-center space-x-3">
+                            <div class="relative">
+                                <input type="text" placeholder="Tìm kiếm vụ việc..." class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:border-primary focus:ring-1 focus:ring-primary">
+                                <div class="w-5 h-5 flex items-center justify-center absolute left-3 top-1/2 transform -translate-y-1/2">
+                                    <i class="ri-search-line text-gray-400 text-sm"></i>
+                                </div>
+                            </div>
+                            <button class="px-4 py-2 bg-primary text-white rounded-button font-medium hover:bg-orange-600 transition-colors whitespace-nowrap !rounded-button">
+                                Thêm vụ việc
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Số hiệu</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Loại vụ việc</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nguyên đơn</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Bị đơn</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Thẩm phán</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Trạng thái</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ngày tạo</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">VV-2025-001</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Dân sự</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Trần Thị Hương</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Lê Văn Đức</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Nguyễn Văn Minh</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800">Đang xét xử</span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">15/01/2025</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                    <div class="flex space-x-2">
+                                        <button class="w-8 h-8 flex items-center justify-center text-primary hover:bg-primary hover:bg-opacity-10 rounded">
+                                            <i class="ri-eye-line text-sm"></i>
+                                        </button>
+                                        <button class="w-8 h-8 flex items-center justify-center text-secondary hover:bg-secondary hover:bg-opacity-10 rounded">
+                                            <i class="ri-edit-line text-sm"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">VV-2025-002</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Hình sự</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Viện kiểm sát</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Phạm Minh Tuấn</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Lê Thị Mai</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">Đã kết thúc</span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">12/01/2025</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                    <div class="flex space-x-2">
+                                        <button class="w-8 h-8 flex items-center justify-center text-primary hover:bg-primary hover:bg-opacity-10 rounded">
+                                            <i class="ri-eye-line text-sm"></i>
+                                        </button>
+                                        <button class="w-8 h-8 flex items-center justify-center text-secondary hover:bg-secondary hover:bg-opacity-10 rounded">
+                                            <i class="ri-edit-line text-sm"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">VV-2025-003</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Hành chính</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Công ty TNHH ABC</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">UBND Quận 1</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Hoàng Văn Nam</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">Chờ phiên tòa</span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">10/01/2025</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                    <div class="flex space-x-2">
+                                        <button class="w-8 h-8 flex items-center justify-center text-primary hover:bg-primary hover:bg-opacity-10 rounded">
+                                            <i class="ri-eye-line text-sm"></i>
+                                        </button>
+                                        <button class="w-8 h-8 flex items-center justify-center text-secondary hover:bg-secondary hover:bg-opacity-10 rounded">
+                                            <i class="ri-edit-line text-sm"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">VV-2025-004</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Kinh tế</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Ngân hàng XYZ</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Võ Thành Long</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Đặng Thị Lan</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-800">Tạm hoãn</span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">08/01/2025</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                    <div class="flex space-x-2">
+                                        <button class="w-8 h-8 flex items-center justify-center text-primary hover:bg-primary hover:bg-opacity-10 rounded">
+                                            <i class="ri-eye-line text-sm"></i>
+                                        </button>
+                                        <button class="w-8 h-8 flex items-center justify-center text-secondary hover:bg-secondary hover:bg-opacity-10 rounded">
+                                            <i class="ri-edit-line text-sm"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">VV-2025-005</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Lao động</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Nguyễn Thị Bích</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Công ty DEF</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Trần Văn Hùng</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800">Đang xét xử</span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">05/01/2025</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                    <div class="flex space-x-2">
+                                        <button class="w-8 h-8 flex items-center justify-center text-primary hover:bg-primary hover:bg-opacity-10 rounded">
+                                            <i class="ri-eye-line text-sm"></i>
+                                        </button>
+                                        <button class="w-8 h-8 flex items-center justify-center text-secondary hover:bg-secondary hover:bg-opacity-10 rounded">
+                                            <i class="ri-edit-line text-sm"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="px-6 py-4 border-t bg-gray-50 flex items-center justify-between">
+                    <div class="text-sm text-gray-500">
+                        Hiển thị 1-5 trong tổng số 247 vụ việc
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50 disabled:opacity-50" disabled>
+                            Trước
+                        </button>
+                        <button class="px-3 py-1 bg-primary text-white rounded text-sm">1</button>
+                        <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">2</button>
+                        <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">3</button>
+                        <button class="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-50">
+                            Sau
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script id="administrative-selector">
+        document.addEventListener('DOMContentLoaded', function() {
+            const provinceSelect = document.getElementById('provinceSelect');
+            const provinceDropdown = document.getElementById('provinceDropdown');
+            const provinceText = document.getElementById('provinceText');
+            const provinceSearch = document.getElementById('provinceSearch');
+            const provinceList = document.getElementById('provinceList');
+            
+            const wardSelect = document.getElementById('wardSelect');
+            const wardDropdown = document.getElementById('wardDropdown');
+            const wardText = document.getElementById('wardText');
+            const wardSearch = document.getElementById('wardSearch');
+            const wardList = document.getElementById('wardList');
+            
+            const clearSelection = document.getElementById('clearSelection');
+
+            const wardData = {
+                '01': [
+                    { value: '00001', name: '00001 - Phường Phúc Xá' },
+                    { value: '00004', name: '00004 - Phường Trúc Bạch' },
+                    { value: '00006', name: '00006 - Phường Vĩnh Phúc' },
+                    { value: '00007', name: '00007 - Phường Cống Vị' },
+                    { value: '00008', name: '00008 - Phường Liễu Giai' }
+                ],
+                '79': [
+                    { value: '26734', name: '26734 - Phường Tân Định' },
+                    { value: '26737', name: '26737 - Phường Đa Kao' },
+                    { value: '26740', name: '26740 - Phường Bến Nghé' },
+                    { value: '26743', name: '26743 - Phường Bến Thành' },
+                    { value: '26746', name: '26746 - Phường Nguyễn Thái Bình' }
+                ]
+            };
+
+            provinceSelect.addEventListener('click', function(e) {
+                e.stopPropagation();
+                provinceDropdown.classList.toggle('hidden');
+                wardDropdown.classList.add('hidden');
+            });
+
+            wardSelect.addEventListener('click', function(e) {
+                if (wardSelect.disabled) return;
+                e.stopPropagation();
+                wardDropdown.classList.toggle('hidden');
+                provinceDropdown.classList.add('hidden');
+            });
+
+            provinceList.addEventListener('click', function(e) {
+                if (e.target.hasAttribute('data-value')) {
+                    const value = e.target.getAttribute('data-value');
+                    const text = e.target.textContent;
+                    
+                    provinceText.textContent = text;
+                    provinceText.classList.remove('text-gray-500');
+                    provinceText.classList.add('text-gray-900');
+                    provinceDropdown.classList.add('hidden');
+                    
+                    wardSelect.disabled = false;
+                    wardSelect.classList.remove('bg-gray-100', 'cursor-not-allowed');
+                    wardSelect.classList.add('bg-white', 'hover:border-gray-400', 'focus:border-primary');
+                    wardText.textContent = 'Chọn Phường/Xã';
+                    wardText.classList.remove('text-gray-900');
+                    wardText.classList.add('text-gray-500');
+                    
+                    updateWardList(value);
+                }
+            });
+
+            wardList.addEventListener('click', function(e) {
+                if (e.target.hasAttribute('data-value')) {
+                    const text = e.target.textContent;
+                    
+                    wardText.textContent = text;
+                    wardText.classList.remove('text-gray-500');
+                    wardText.classList.add('text-gray-900');
+                    wardDropdown.classList.add('hidden');
+                }
+            });
+
+            function updateWardList(provinceValue) {
+                wardList.innerHTML = '';
+                const wards = wardData[provinceValue] || [];
+                
+                wards.forEach(ward => {
+                    const div = document.createElement('div');
+                    div.className = 'px-4 py-2 hover:bg-gray-50 cursor-pointer text-sm';
+                    div.setAttribute('data-value', ward.value);
+                    div.textContent = ward.name;
+                    wardList.appendChild(div);
+                });
+            }
+
+            provinceSearch.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
+                const items = provinceList.querySelectorAll('[data-value]');
+                
+                items.forEach(item => {
+                    const text = item.textContent.toLowerCase();
+                    if (text.includes(searchTerm)) {
+                        item.style.display = 'block';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            });
+
+            wardSearch.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
+                const items = wardList.querySelectorAll('[data-value]');
+                
+                items.forEach(item => {
+                    const text = item.textContent.toLowerCase();
+                    if (text.includes(searchTerm)) {
+                        item.style.display = 'block';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            });
+
+            clearSelection.addEventListener('click', function() {
+                provinceText.textContent = 'Chọn Tỉnh/Thành phố';
+                provinceText.classList.remove('text-gray-900');
+                provinceText.classList.add('text-gray-500');
+                
+                wardText.textContent = 'Chọn Phường/Xã';
+                wardText.classList.remove('text-gray-900');
+                wardText.classList.add('text-gray-500');
+                
+                wardSelect.disabled = true;
+                wardSelect.classList.add('bg-gray-100', 'cursor-not-allowed');
+                wardSelect.classList.remove('bg-white', 'hover:border-gray-400', 'focus:border-primary');
+                
+                provinceDropdown.classList.add('hidden');
+                wardDropdown.classList.add('hidden');
+                
+                provinceSearch.value = '';
+                wardSearch.value = '';
+                wardList.innerHTML = '';
+            });
+
+            document.addEventListener('click', function() {
+                provinceDropdown.classList.add('hidden');
+                wardDropdown.classList.add('hidden');
+            });
+        });
+    </script>
+
+    <script id="charts-initialization">
+        document.addEventListener('DOMContentLoaded', function() {
+            const caseTypeChart = echarts.init(document.getElementById('caseTypeChart'));
+            const progressChart = echarts.init(document.getElementById('progressChart'));
+
+            const caseTypeOption = {
+                animation: false,
+                tooltip: {
+                    trigger: 'item',
+                    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                    borderColor: '#e5e7eb',
+                    borderWidth: 1,
+                    textStyle: {
+                        color: '#1f2937'
+                    }
+                },
+                legend: {
+                    orient: 'vertical',
+                    left: 'left',
+                    textStyle: {
+                        color: '#1f2937'
+                    }
+                },
+                series: [
+                    {
+                        name: 'Loại vụ việc',
+                        type: 'pie',
+                        radius: ['40%', '70%'],
+                        center: ['60%', '50%'],
+                        itemStyle: {
+                            borderRadius: 8
+                        },
+                        data: [
+                            { value: 342, name: 'Dân sự', itemStyle: { color: 'rgba(87, 181, 231, 1)' } },
+                            { value: 256, name: 'Hình sự', itemStyle: { color: 'rgba(141, 211, 199, 1)' } },
+                            { value: 189, name: 'Hành chính', itemStyle: { color: 'rgba(251, 191, 114, 1)' } },
+                            { value: 147, name: 'Kinh tế', itemStyle: { color: 'rgba(252, 141, 98, 1)' } }
+                        ],
+                        emphasis: {
+                            itemStyle: {
+                                shadowBlur: 10,
+                                shadowOffsetX: 0,
+                                shadowColor: 'rgba(0, 0, 0, 0.1)'
+                            }
+                        }
+                    }
+                ]
+            };
+
+            const progressOption = {
+                animation: false,
+                tooltip: {
+                    trigger: 'axis',
+                    backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                    borderColor: '#e5e7eb',
+                    borderWidth: 1,
+                    textStyle: {
+                        color: '#1f2937'
+                    }
+                },
+                legend: {
+                    data: ['Tiếp nhận', 'Đang xử lý', 'Hoàn thành'],
+                    textStyle: {
+                        color: '#1f2937'
+                    }
+                },
+                grid: {
+                    left: 0,
+                    right: 0,
+                    top: 40,
+                    bottom: 0,
+                    containLabel: true
+                },
+                xAxis: {
+                    type: 'category',
+                    data: ['T1', 'T2', 'T3', 'T4', 'T5', 'T6'],
+                    axisLine: {
+                        lineStyle: {
+                            color: '#e5e7eb'
+                        }
+                    },
+                    axisLabel: {
+                        color: '#1f2937'
+                    }
+                },
+                yAxis: {
+                    type: 'value',
+                    axisLine: {
+                        lineStyle: {
+                            color: '#e5e7eb'
+                        }
+                    },
+                    axisLabel: {
+                        color: '#1f2937'
+                    },
+                    splitLine: {
+                        lineStyle: {
+                            color: '#f3f4f6'
+                        }
+                    }
+                },
+                series: [
+                    {
+                        name: 'Tiếp nhận',
+                        type: 'line',
+                        smooth: true,
+                        data: [120, 132, 101, 134, 90, 230],
+                        lineStyle: {
+                            color: 'rgba(87, 181, 231, 1)'
+                        },
+                        itemStyle: {
+                            color: 'rgba(87, 181, 231, 1)'
+                        },
+                        areaStyle: {
+                            color: {
+                                type: 'linear',
+                                x: 0,
+                                y: 0,
+                                x2: 0,
+                                y2: 1,
+                                colorStops: [{
+                                    offset: 0, color: 'rgba(87, 181, 231, 0.1)'
+                                }, {
+                                    offset: 1, color: 'rgba(87, 181, 231, 0.01)'
+                                }]
+                            }
+                        },
+                        showSymbol: false
+                    },
+                    {
+                        name: 'Đang xử lý',
+                        type: 'line',
+                        smooth: true,
+                        data: [220, 182, 191, 234, 290, 330],
+                        lineStyle: {
+                            color: 'rgba(141, 211, 199, 1)'
+                        },
+                        itemStyle: {
+                            color: 'rgba(141, 211, 199, 1)'
+                        },
+                        areaStyle: {
+                            color: {
+                                type: 'linear',
+                                x: 0,
+                                y: 0,
+                                x2: 0,
+                                y2: 1,
+                                colorStops: [{
+                                    offset: 0, color: 'rgba(141, 211, 199, 0.1)'
+                                }, {
+                                    offset: 1, color: 'rgba(141, 211, 199, 0.01)'
+                                }]
+                            }
+                        },
+                        showSymbol: false
+                    },
+                    {
+                        name: 'Hoàn thành',
+                        type: 'line',
+                        smooth: true,
+                        data: [150, 232, 201, 154, 190, 330],
+                        lineStyle: {
+                            color: 'rgba(251, 191, 114, 1)'
+                        },
+                        itemStyle: {
+                            color: 'rgba(251, 191, 114, 1)'
+                        },
+                        areaStyle: {
+                            color: {
+                                type: 'linear',
+                                x: 0,
+                                y: 0,
+                                x2: 0,
+                                y2: 1,
+                                colorStops: [{
+                                    offset: 0, color: 'rgba(251, 191, 114, 0.1)'
+                                }, {
+                                    offset: 1, color: 'rgba(251, 191, 114, 0.01)'
+                                }]
+                            }
+                        },
+                        showSymbol: false
+                    }
+                ]
+            };
+
+            caseTypeChart.setOption(caseTypeOption);
+            progressChart.setOption(progressOption);
+
+            window.addEventListener('resize', function() {
+                caseTypeChart.resize();
+                progressChart.resize();
+            });
+        });
+    </script>
+</body>
+</html>
