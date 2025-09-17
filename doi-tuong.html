@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hệ thống Quản lý Tuyển chọn - Quản lý Công dân</title>
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <script>tailwind.config={theme:{extend:{colors:{primary:'#1e40af',secondary:'#3b82f6'},borderRadius:{'none':'0px','sm':'4px',DEFAULT:'8px','md':'12px','lg':'16px','xl':'20px','2xl':'24px','3xl':'32px','full':'9999px','button':'8px'}}}}</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+    <style>
+        :where([class^="ri-"])::before { content: "\f3c2"; }
+        .custom-checkbox:checked { background-color: #1e40af; }
+        .custom-checkbox:checked + label { border-color: #1e40af; }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <header class="bg-white shadow-sm border-b sticky top-0 z-50">
+        <div class="px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-8">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
+                            <i class="ri-shield-star-line text-white text-xl"></i>
+                        </div>
+                        <div>
+                            <h1 class="text-lg font-bold text-gray-900">Hệ thống Quản lý</h1>
+                            <p class="text-sm text-gray-600">Tuyển chọn & Gọi công dân nhập ngũ</p>
+                        </div>
+                    </div>
+                    <nav class="hidden lg:flex space-x-8">
+                        <a href="#" class="text-gray-600 hover:text-primary px-3 py-2 text-sm font-medium">Tổng quan</a>
+                        <a href="#" class="text-primary border-b-2 border-primary px-3 py-2 text-sm font-medium">Công dân</a>
+                        <a href="" data-readdy="true" class="text-gray-600 hover:text-primary px-3 py-2 text-sm font-medium">Tuyển chọn</a>
+                        <a href="#" class="text-gray-600 hover:text-primary px-3 py-2 text-sm font-medium">Thống kê</a>
+                        <a href="#" class="text-gray-600 hover:text-primary px-3 py-2 text-sm font-medium">Báo cáo</a>
+                    </nav>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="relative">
+                        <input type="text" placeholder="Tìm kiếm..." class="w-64 pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                        <div class="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 flex items-center justify-center">
+                            <i class="ri-search-line text-gray-400 text-sm"></i>
+                        </div>
+                    </div>
+                    <button class="relative w-10 h-10 flex items-center justify-center">
+                        <i class="ri-notification-line text-gray-600 text-xl"></i>
+                        <span class="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">2</span>
+                    </button>
+                    <div class="flex items-center space-x-3">
+                        <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
+                            <i class="ri-user-line text-white text-sm"></i>
+                        </div>
+                        <span class="text-sm font-medium text-gray-700">Nguyễn Văn An</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="px-6 py-8">
+        <div class="mb-8">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h2 class="text-2xl font-bold text-gray-900 mb-2">Quản lý Công dân</h2>
+                    <p class="text-gray-600">Quản lý thông tin chi tiết của công dân trong hệ thống</p>
+                </div>
+                <button class="bg-primary text-white px-4 py-2 rounded-button text-sm font-medium hover:bg-blue-700 whitespace-nowrap">
+                    <i class="ri-add-line mr-2"></i>Thêm mới công dân
+                </button>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-sm border p-6 mb-8">
+            <div class="grid grid-cols-1 md:grid-cols-5 gap-6">
+                <div class="col-span-2">
+                    <div class="relative">
+                        <input type="text" placeholder="Tìm kiếm theo tên hoặc CMND/CCCD..." class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                        <div class="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 flex items-center justify-center">
+                            <i class="ri-search-line text-gray-400 text-sm"></i>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="relative">
+                        <button class="w-full text-left border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent pr-8">
+                            Khu vực
+                            <i class="ri-arrow-down-s-line absolute right-3 top-1/2 transform -translate-y-1/2"></i>
+                        </button>
+                    </div>
+                </div>
+                <div>
+                    <div class="relative">
+                        <button class="w-full text-left border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent pr-8">
+                            Giới tính
+                            <i class="ri-arrow-down-s-line absolute right-3 top-1/2 transform -translate-y-1/2"></i>
+                        </button>
+                    </div>
+                </div>
+                <div>
+                    <div class="relative">
+                        <button class="w-full text-left border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent pr-8">
+                            Trình độ học vấn
+                            <i class="ri-arrow-down-s-line absolute right-3 top-1/2 transform -translate-y-1/2"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-sm border">
+            <div class="p-6 border-b">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-4">
+                        <h3 class="text-lg font-semibold text-gray-900">Danh sách công dân</h3>
+                        <span class="text-sm text-gray-600">Tổng số: 256 công dân</span>
+                    </div>
+                    <div class="flex space-x-3">
+                        <button class="bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-button text-sm font-medium hover:bg-gray-50 whitespace-nowrap">
+                            <i class="ri-download-line mr-2"></i>Xuất Excel
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead>
+                        <tr class="bg-gray-50 border-b">
+                            <th class="text-left py-3 px-4 font-medium text-gray-700">Họ và tên</th>
+                            <th class="text-left py-3 px-4 font-medium text-gray-700">CMND/CCCD</th>
+                            <th class="text-left py-3 px-4 font-medium text-gray-700">Ngày sinh</th>
+                            <th class="text-left py-3 px-4 font-medium text-gray-700">Địa chỉ</th>
+                            <th class="text-left py-3 px-4 font-medium text-gray-700">Giới tính</th>
+                            <th class="text-left py-3 px-4 font-medium text-gray-700">Trình độ</th>
+                            <th class="text-center py-3 px-4 font-medium text-gray-700">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-b hover:bg-gray-50">
+                            <td class="py-3 px-4">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                                        <i class="ri-user-line text-primary"></i>
+                                    </div>
+                                    <div class="font-medium text-gray-900">Nguyễn Thị Mai Anh</div>
+                                </div>
+                            </td>
+                            <td class="py-3 px-4">001200012345</td>
+                            <td class="py-3 px-4">15/08/2000</td>
+                            <td class="py-3 px-4">Số 123 Lê Thanh Nghị, Hai Bà Trưng, Hà Nội</td>
+                            <td class="py-3 px-4">Nữ</td>
+                            <td class="py-3 px-4">Đại học</td>
+                            <td class="py-3 px-4">
+                                <div class="flex items-center justify-center space-x-2">
+                                    <button class="p-2 hover:bg-gray-100 rounded">
+                                        <i class="ri-eye-line text-gray-600"></i>
+                                    </button>
+                                    <button class="p-2 hover:bg-gray-100 rounded">
+                                        <i class="ri-edit-line text-gray-600"></i>
+                                    </button>
+                                    <button class="p-2 hover:bg-gray-100 rounded">
+                                        <i class="ri-delete-bin-line text-red-600"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="border-b hover:bg-gray-50">
+                            <td class="py-3 px-4">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                                        <i class="ri-user-line text-primary"></i>
+                                    </div>
+                                    <div class="font-medium text-gray-900">Trần Minh Quân</div>
+                                </div>
+                            </td>
+                            <td class="py-3 px-4">001200012346</td>
+                            <td class="py-3 px-4">22/03/2001</td>
+                            <td class="py-3 px-4">Số 45 Trần Đại Nghĩa, Hai Bà Trưng, Hà Nội</td>
+                            <td class="py-3 px-4">Nam</td>
+                            <td class="py-3 px-4">Cao đẳng</td>
+                            <td class="py-3 px-4">
+                                <div class="flex items-center justify-center space-x-2">
+                                    <button class="p-2 hover:bg-gray-100 rounded">
+                                        <i class="ri-eye-line text-gray-600"></i>
+                                    </button>
+                                    <button class="p-2 hover:bg-gray-100 rounded">
+                                        <i class="ri-edit-line text-gray-600"></i>
+                                    </button>
+                                    <button class="p-2 hover:bg-gray-100 rounded">
+                                        <i class="ri-delete-bin-line text-red-600"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="border-b hover:bg-gray-50">
+                            <td class="py-3 px-4">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                                        <i class="ri-user-line text-primary"></i>
+                                    </div>
+                                    <div class="font-medium text-gray-900">Phạm Hoàng Nam</div>
+                                </div>
+                            </td>
+                            <td class="py-3 px-4">001200012347</td>
+                            <td class="py-3 px-4">10/11/2002</td>
+                            <td class="py-3 px-4">Số 78 Tạ Quang Bửu, Hai Bà Trưng, Hà Nội</td>
+                            <td class="py-3 px-4">Nam</td>
+                            <td class="py-3 px-4">THPT</td>
+                            <td class="py-3 px-4">
+                                <div class="flex items-center justify-center space-x-2">
+                                    <button class="p-2 hover:bg-gray-100 rounded">
+                                        <i class="ri-eye-line text-gray-600"></i>
+                                    </button>
+                                    <button class="p-2 hover:bg-gray-100 rounded">
+                                        <i class="ri-edit-line text-gray-600"></i>
+                                    </button>
+                                    <button class="p-2 hover:bg-gray-100 rounded">
+                                        <i class="ri-delete-bin-line text-red-600"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="border-b hover:bg-gray-50">
+                            <td class="py-3 px-4">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                                        <i class="ri-user-line text-primary"></i>
+                                    </div>
+                                    <div class="font-medium text-gray-900">Lê Thị Thanh Hà</div>
+                                </div>
+                            </td>
+                            <td class="py-3 px-4">001200012348</td>
+                            <td class="py-3 px-4">05/04/2000</td>
+                            <td class="py-3 px-4">Số 156 Lê Duẩn, Hai Bà Trưng, Hà Nội</td>
+                            <td class="py-3 px-4">Nữ</td>
+                            <td class="py-3 px-4">Đại học</td>
+                            <td class="py-3 px-4">
+                                <div class="flex items-center justify-center space-x-2">
+                                    <button class="p-2 hover:bg-gray-100 rounded">
+                                        <i class="ri-eye-line text-gray-600"></i>
+                                    </button>
+                                    <button class="p-2 hover:bg-gray-100 rounded">
+                                        <i class="ri-edit-line text-gray-600"></i>
+                                    </button>
+                                    <button class="p-2 hover:bg-gray-100 rounded">
+                                        <i class="ri-delete-bin-line text-red-600"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="border-b hover:bg-gray-50">
+                            <td class="py-3 px-4">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                                        <i class="ri-user-line text-primary"></i>
+                                    </div>
+                                    <div class="font-medium text-gray-900">Vũ Đức Minh</div>
+                                </div>
+                            </td>
+                            <td class="py-3 px-4">001200012349</td>
+                            <td class="py-3 px-4">18/12/2001</td>
+                            <td class="py-3 px-4">Số 89 Trần Hưng Đạo, Hoàn Kiếm, Hà Nội</td>
+                            <td class="py-3 px-4">Nam</td>
+                            <td class="py-3 px-4">Cao đẳng</td>
+                            <td class="py-3 px-4">
+                                <div class="flex items-center justify-center space-x-2">
+                                    <button class="p-2 hover:bg-gray-100 rounded">
+                                        <i class="ri-eye-line text-gray-600"></i>
+                                    </button>
+                                    <button class="p-2 hover:bg-gray-100 rounded">
+                                        <i class="ri-edit-line text-gray-600"></i>
+                                    </button>
+                                    <button class="p-2 hover:bg-gray-100 rounded">
+                                        <i class="ri-delete-bin-line text-red-600"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="p-6 border-t">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-4">
+                        <span class="text-sm text-gray-600">Hiển thị</span>
+                        <div class="relative">
+                            <button class="border border-gray-300 rounded px-3 py-1 text-sm hover:bg-gray-50">
+                                10
+                                <i class="ri-arrow-down-s-line ml-2"></i>
+                            </button>
+                        </div>
+                        <span class="text-sm text-gray-600">trên trang</span>
+                    </div>
+                    <div class="flex space-x-2">
+                        <button class="px-3 py-1 border rounded text-sm hover:bg-gray-50">Trước</button>
+                        <button class="px-3 py-1 bg-primary text-white rounded text-sm">1</button>
+                        <button class="px-3 py-1 border rounded text-sm hover:bg-gray-50">2</button>
+                        <button class="px-3 py-1 border rounded text-sm hover:bg-gray-50">3</button>
+                        <button class="px-3 py-1 border rounded text-sm hover:bg-gray-50">Sau</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script id="tableActions">
+        document.addEventListener('DOMContentLoaded', function() {
+            const deleteButtons = document.querySelectorAll('.ri-delete-bin-line').forEach(button => {
+                button.closest('button').addEventListener('click', function() {
+                    if(confirm('Bạn có chắc chắn muốn xóa công dân này?')) {
+                        const row = this.closest('tr');
+                        row.remove();
+                    }
+                });
+            });
+        });
+    </script>
+\
+</body>
+</html>
